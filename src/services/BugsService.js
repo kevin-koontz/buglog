@@ -1,6 +1,9 @@
+import { dbContext } from "../db/DbContext.js"
+
 class BugsService {
-  createBugs(bugData) {
-    throw new Error("Method not implemented.");
+  async createBugs(bugData) {
+    const bug = await dbContext.Bugs.create(bugData)
+    return bug
   }
 
 }
