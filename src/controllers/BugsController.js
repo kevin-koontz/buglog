@@ -8,10 +8,12 @@ export class BugsController extends BaseController {
     super('api/bugs')
     this.router
       .get('', this.getAllBugs)
+      .get('/:bugId', this.getBugById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createBugs)
 
   }
+  
 
   async createBugs(request, response, next) {
     try {
@@ -34,4 +36,24 @@ export class BugsController extends BaseController {
       next(error)
     }
   }
+
+// NOTE we are getting bugs by ID, however, creator must be populated and is returning as null, 2/3 tests are passing
+
+
+  async getBugById(request, response, next) {
+    try {
+      const bugId = request.params.bugId
+      const creator = request.creator
+      const creatorInfo = request.creatorId
+      const bug = await bugsService.getBugById(bugId, creator)
+      response.send(bug)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+
+
+
+
 }
